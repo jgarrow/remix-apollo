@@ -1,3 +1,5 @@
+This repo is a demonstration of using Apollo Client with Remix. It uses Apollo's recommended [set up for SSR](https://www.apollographql.com/docs/react/performance/server-side-rendering/). This allows you to take advantage of Apollo Client's hooks and caching while still having requests done on the server. 
+
 # Welcome to Remix!
 
 - [Remix Docs](https://remix.run/docs)
