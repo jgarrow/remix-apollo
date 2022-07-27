@@ -22,6 +22,7 @@ export default function handleRequest(
     link: createHttpLink({
       uri: "https://flyby-gateway.herokuapp.com/", // from Apollo Odyssey's Voyage tutorial series (https://www.apollographql.com/tutorials/voyage-part1/)
       headers: request.headers,
+      credentials: request.credentials ?? "include", // or "same-origin" if your backend server is the same domain
     }),
   });
 
