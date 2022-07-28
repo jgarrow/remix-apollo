@@ -7,7 +7,6 @@ import {
   InMemoryCache,
   createHttpLink,
 } from "@apollo/client";
-import ApolloContext from "./context/apollo";
 import { getDataFromTree } from "@apollo/client/react/ssr";
 
 export default function handleRequest(
@@ -22,7 +21,7 @@ export default function handleRequest(
     link: createHttpLink({
       uri: "https://flyby-gateway.herokuapp.com/", // from Apollo Odyssey's Voyage tutorial series (https://www.apollographql.com/tutorials/voyage-part1/)
       headers: request.headers,
-      credentials: request.credentials ?? "include", // or "same-origin" if your backend server is the same domain
+      credentials: request.credentials ?? "include",
     }),
   });
 
@@ -35,9 +34,16 @@ export default function handleRequest(
   return getDataFromTree(App).then(() => {
     const initialState = client.extract();
     const markup = renderToString(
-      <ApolloContext.Provider value={initialState}>
+      <>
         {App}
-      </ApolloContext.Provider>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.__APOLLO_STATE__=${JSON.stringify(
+              initialState
+            ).replace(/</g, "\\u003c")}`, // The replace call escapes the < character to prevent cross-site scripting attacks that are possible via the presence of </script> in a string literal
+          }}
+        />
+      </>
     );
 
     responseHeaders.set("Content-Type", "text/html");

@@ -7,18 +7,15 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import ApolloContext from "~/context/apollo";
-import { useContext } from "react";
 
+// https://remix.run/docs/en/v1/api/conventions#meta
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
-  title: "New Remix App",
+  title: "Remix with Apollo Client",
   viewport: "width=device-width,initial-scale=1",
 });
 
 export default function App() {
-  const initialState = useContext(ApolloContext);
-
   return (
     <html lang="en">
       <head>
@@ -30,13 +27,6 @@ export default function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.__APOLLO_STATE__=${JSON.stringify(
-              initialState
-            ).replace(/</g, "\\u003c")}`, // The replace call escapes the < character to prevent cross-site scripting attacks that are possible via the presence of </script> in a string literal
-          }}
-        />
       </body>
     </html>
   );
